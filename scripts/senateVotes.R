@@ -1,16 +1,16 @@
 source('scripts/distFuncs.R')
 #Senate member voting records
-Sall_votes = as_tibble(read_csv("./data/Sall_votes_withPartyAndNames.csv") )
+Sall_votes <- as_tibble(read_csv("./data/Sall_votes_withPartyAndNames.csv") )
 
 #Information on each vote (rollcall number)
-Sall_vote_dates = as_tibble(read_csv("./data/Sall_rollcalls.csv"))
+Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = c("numeric","character","numeric","character","character","character","numeric","numeric","numeric","numeric","numeric","numeric","numeric","character","character","character","character","character")))
 
 
 # ------------- Make distance matrix and nexus output for 116th congresses -------------
-cong = 116
+cong <- 116
 Sall_votes_sub  <- Sall_votes %>% filter(congress == cong)
   
-fname <- paste("./data/disttest_",as.character(cong),"th.nex",sep="")
+fname <- paste("./data/dist_",as.character(cong),"th.nex",sep="")
   
 l1DistsAll <- makeDistMat(Sall_votes_sub,fname)
 
@@ -25,7 +25,7 @@ splitDists_116 <- pairSplitDists(splitMat_116)
 
 # Plot pariwise Split distances
 par(mar=c(8,4,4,1)+.1,cex.main=0.5,cex.axis=0.1)
-pdf(file = "./splitDists_116.pdf",width=10,height=10)
+pdf(file = "./figures/splitDists_116.pdf",width=10,height=10)
 pheatmap(as.matrix(splitDists_116),scale="none",
               col=viridis(max(splitDists_116),direction = -1),
               main = "Senator Pairwise Split Distances",
@@ -55,7 +55,7 @@ dev.off()
 corr <- cor(as.vector(splitDists_116),as.vector(l1DistsAll))
 mylabel = bquote(italic(corr) == .(format(corr, digits = 3)))
 
-pdf(file = "./l1vsplit_dists_corr.pdf",width=10,height=10)
+pdf(file = "./figures/l1vsplit_dists_corr.pdf",width=10,height=10)
 plot(as.matrix(splitDists_116 ),as.matrix(l1DistsAll ),
      xlab='NeighborNet Distances',ylab='L1 Distances')
 text(x = 500, y = 300, labels = mylabel)
@@ -70,7 +70,7 @@ plotCenterDist(centerDists)
 #  ------------- Within-party strucures and distances -------------
 
 # Distance between non-Republican members only --> Check if Dem Primary Group still exists
-cong = 116
+cong <- 116
 Sall_votes_dem <- Sall_votes %>% filter(congress == cong)
 Sall_votes_dem  <- Sall_votes_dem %>% filter(party_code != 200)
 
@@ -80,18 +80,18 @@ l1DistsDem <- makeDistMat(Sall_votes_dem,fname)
 
 
 # Runs Test for Dem Primary Candidates grouping (at least 6 of 7 ordered contiguously)
-numCands = 7 #Including Gillibrand and Bennet
-numRestAllParties = dim(as.matrix(l1DistsAll))[1] - numCands
-numRestDem = dim(as.matrix(l1DistsDem))[1] - numCands
+numCands <- 7 #Including Gillibrand and Bennet
+numRestAllParties <- dim(as.matrix(l1DistsAll))[1] - numCands
+numRestDem <- dim(as.matrix(l1DistsDem))[1] - numCands
 
-pvalAll = calcRunsTest(numCands,numRestAllParties,5,exactTest = FALSE) #Gillibrand not ordered sequentially with others
+pvalAll <- calcRunsTest(numCands,numRestAllParties,7,exactTest = FALSE) #Gillibrand not ordered sequentially with others
 print(pvalAll)
-pvalDem = calcRunsTest(numCands,numRestDem,5,exactTest = FALSE) #Bennet not ordered sequentially with others
+pvalDem <- calcRunsTest(numCands,numRestDem,7,exactTest = FALSE) #Bennet not ordered sequentially with others
 print(pvalDem)
 
 
 # Distance between Republican members only 
-cong = 116
+cong <- 116
 Sall_votes_rep <- Sall_votes %>% filter(congress == cong)
 Sall_votes_rep  <- Sall_votes_rep %>% filter(party_code == 200)
 
@@ -103,7 +103,7 @@ l1DistsRep <- makeDistMat(Sall_votes_rep,fname)
 
 # ------------- Ranking votes of Dem primary candidates by agreement with rest of party -------------
 
-cong = 116
+cong <- 116
 Sall_votes_dem <- Sall_votes %>% filter(congress == cong)
 Sall_votes_dem  <- Sall_votes_dem %>% filter(party_code != 200)
 
@@ -157,7 +157,7 @@ ggplot(toPlot, aes(x=Rollcall, y=Percent,color=color)) +
   xlab('Vote Rollcall Number') +
   ylab('Percent Agreement (Within Party Votes)')
 
-ggsave("demVoteAgreementCandidates_sub.pdf",width=5, height=3)
+ggsave("./figures/demVoteAgreementCandidates_sub.pdf",width=5, height=3)
 
 lowAgree <- toPlot$Rollcall[toPlot$Percent < 0.25]
 dates_S_H <- Sall_vote_dates %>% filter(congress %in% cong)
@@ -176,7 +176,7 @@ ggplot(toPlot, aes(x=Rollcall, y=Percent,color=color)) +
   xlab('Vote Rollcall Number') +
   ylab('Percent Agreement (Within Party Votes)')
 
-ggsave("demVoteAgreementCandidates_sub_02.pdf",width=5, height=3)
+ggsave("./figures/demVoteAgreementCandidates_sub_02.pdf",width=5, height=3)
 lowAgree <- toPlot$Rollcall[toPlot$Percent < 0.25]
 dates_B_W <- Sall_vote_dates %>% filter(congress %in% cong)
 dates_B_W <- dates_S_H %>% filter(rollnumber %in% lowAgree)
@@ -195,7 +195,7 @@ ggplot(toPlot, aes(x=Rollcall, y=Percent,color=color)) +
   xlab('Vote Rollcall Number') + 
   ylab('Percent Agreement (Within Party Votes)')
 
-ggsave("demVoteAgreementCandidates_rand.pdf",width=5, height=3)
+ggsave("./figures/demVoteAgreementCandidates_rand.pdf",width=5, height=3)
 
 
 toPlot <- calcDisagree(votesDem,c("MANCHIN_J_Dem","SINEMA_K_Dem",
@@ -209,7 +209,7 @@ ggplot(toPlot, aes(x=Rollcall, y=Percent,color=color)) +
   xlab('Vote Rollcall Number') + 
   ylab('Percent Agreement (Within Party Votes)')
 
-ggsave("demVoteAgreementCandidates_rand2.pdf",width=5, height=3)
+ggsave("./figures/demVoteAgreementCandidates_rand2.pdf",width=5, height=3)
 
 
 

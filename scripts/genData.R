@@ -16,8 +16,8 @@ using("usedist","phangorn","readr","tidyverse","tidyr","hash","STAT","graphics",
 
 
 #https://voteview.com/data for all data
-setwd("~/Desktop/senateSplitsTree")
-source('distFuncs.R')
+setwd("~/Desktop/Pachter_Lab/CP_2021")
+source('scripts/distFuncs.R')
 unzip(zipfile = "./data/voteData.zip", exdir = "./data")
 
 Sall_members <- as.tibble(read_csv("./data/Sall_members.csv") )

@@ -97,7 +97,7 @@ ggplot(dfMerge) + geom_line(aes(x=Congress,y=Distance,color=Senator)) +
        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
   geom_point(aes(x=Congress,y=Distance,color=Senator))
 
-ggsave("candidateDistsTime.pdf",width=8,height=6)
+ggsave("./figures/candidateDistsTime.pdf",width=8,height=6)
 
 #  ------- Plot distances from center over time as density plots of whole House --------
 # Make distance matrix and nexus output for 100-116th congresses (~30 years)
@@ -167,7 +167,7 @@ ggplot(dfAll, aes(x=Congress, y=Distance, fill=Congress)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"))
   #theme_minimal(axis.line = element_line(colour = "black"))
 
-ggsave("allMembersDistTime.pdf",width=8,height=5)
+ggsave("./figures/allMembersDistTime.pdf",width=8,height=5)
 
 dodge <- position_dodge(width = 0.5)
 ggplot(dfParties, aes(x=Congress, y=Distance, fill=Party)) +
@@ -177,4 +177,4 @@ ggplot(dfParties, aes(x=Congress, y=Distance, fill=Party)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black")) +
   scale_fill_manual(values=c("#0392cf","#ee4035"))
 
-ggsave("centerDistByParty.pdf",width=12,height=5)
+ggsave("./figures/centerDistByParty.pdf",width=12,height=5)
