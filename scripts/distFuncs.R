@@ -256,19 +256,56 @@ calcDisagree <- function(votesDem, names) {
   justScores <- sortedScores$x
   newRoll <- rollcalls[sortedScores$ix]
   
-  toPlot <- data.frame(justScores, newRoll)
-  colnames(toPlot) <- c('Percent','Rollcall')
-  toPlot$color <- ifelse(toPlot$Percent <= 0.25, 'steelblue', 'grey')
+  voteTypes <- as.numeric(votesDem[ppl[1],newRoll])
+  
+  #Set colors
+  toPlot <- data.frame(justScores, newRoll,voteTypes)
+  
+  colnames(toPlot) <- c('Percent','Rollcall','Vote')
   
   return(toPlot)
 
 }
 
 
+# ---------------------- Rank votes by p-value for given split ------------------
+calcSplitVotPval <- function(votesDem,bin_names) {
+  rollcallNums <- 1:length(votesDem)
+  pvals <- numeric(length(votesDem))
+  #For each vote (Col of votesDem)
+  for (i in rollcallNums){
+    
+    votes <- votesDem[[i]]
+    #Remove all vote positions with 1/2 (abstain) (& name positions)
+    
+    #Construct contingency table for each vote relative to split of interest 
+    zero_names <-  bin_names == 0
+    one_names <-  bin_names == 1
+    
+    zeroFilt_votes <- votes[zero_names]
+    oneFilt_votes <- votes[one_names]
+    
+    # 0-0, 0-0.5, 0-1
+    zeroZero <- sum(zeroFilt_votes == 0)
+    zeroHalf <- sum(zeroFilt_votes == 0.5)
+    zeroOne <- sum(zeroFilt_votes == 1)
+    
+    # 1-0, 1-0.5, 1-1
+    oneZero <- sum(oneFilt_votes == 0)
+    oneHalf <- sum(oneFilt_votes == 0.5)
+    oneOne <- sum(oneFilt_votes == 1)
+    
+
+    #Calculate p-value with Fishers exact test
+    pvals[i] <- fisher.test(rbind(c(zeroZero,zeroHalf,zeroOne),c(oneZero,oneHalf,oneOne)), alternative="two.sided")$p.value
+    
+    
+  }
+  return(pvals)
+}
 
 
-
-# Make vote matrix (NEXUS compatible)
+# Make vote matrix (NEXUS compatible), keep senators with NAs (missing votes)
 makeVoteMatwithNA <- function(Sall_votes) {
   
   retParty <- function(code) {
