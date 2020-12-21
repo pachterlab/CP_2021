@@ -11,7 +11,7 @@ using<-function(...) {
   }
 }
 
-using("usedist","phangorn","readr","tidyverse","tidyr","hash","STAT","graphics","grDevices","ggpubr","viridis","stringi","pheatmap","gplots")
+using("usedist","phangorn","readr","tidyverse","tidyr","hash","STAT","graphics","grDevices","ggpubr","viridis","stringi","pheatmap","gplots","scales")
 
 
 

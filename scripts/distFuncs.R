@@ -237,7 +237,7 @@ calcDisagree <- function(votesDem, names) {
   #Indices of votes where all 5 candidates vote the same
   sameInds <- sapply(votesDem_sub, function(x) length(unique(x)) == 1 ) 
   # Keep rollcall numbers associated with votes were all 5 vote the same
-  rollcalls <- 1:length(sameInds)
+  rollcalls <- as.numeric(colnames(votesDem_sub)) #1:length(sameInds)
   rollcalls <- rollcalls[sameInds]
   
   #Find votes where all 5 candidates vote the same
@@ -256,7 +256,7 @@ calcDisagree <- function(votesDem, names) {
   justScores <- sortedScores$x
   newRoll <- rollcalls[sortedScores$ix]
   
-  voteTypes <- as.numeric(votesDem[ppl[1],newRoll])
+  voteTypes <- as.numeric(votesDem[ppl[1],as.character(newRoll)])
   
   #Set colors
   toPlot <- data.frame(justScores, newRoll,voteTypes)

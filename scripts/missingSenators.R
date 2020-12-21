@@ -16,24 +16,50 @@ Sall_votes_sub  <- Sall_votes %>% filter(congress == cong)
 votes_df_withna <- makeVoteMatwithNA(Sall_votes_sub)
 missingData_names <- rownames(votes_df_withna [rowSums(is.na(votes_df_withna )) > 0,])
 
-#Get votes for Sen. Loeffler
-loeffler_votes <- Sall_votes_sub %>% filter(name == 'LOEFFLER, Kelly')
-loeffler_roll <- loeffler_votes$rollnumber
+    #Get votes for Sen. Loeffler
+    loeffler_votes <- Sall_votes_sub %>% filter(name == 'LOEFFLER, Kelly')
+    loeffler_roll <- loeffler_votes$rollnumber
+    
+    loeffler_rep_df <- Sall_votes_rep %>% filter(rollnumber %in% loeffler_roll)
+    
+    #Make distance matrix for subset of rollnumbers
+    fname <- paste("./data/dist_subset_loeffler_",as.character(cong),"th.nex",sep="")
+    sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
+    
+#   _______________________________________    
+    #Get votes for Sen. Isakson
+    loeffler_votes <- Sall_votes_sub %>% filter(name == 'ISAKSON, Johnny')
+    loeffler_roll <- loeffler_votes$rollnumber
+    
+    loeffler_rep_df <- Sall_votes_rep %>% filter(rollnumber %in% loeffler_roll)
+    
+    #Make distance matrix for subset of rollnumbers
+    fname <- paste("./data/dist_subset_isakson_",as.character(cong),"th.nex",sep="")
+    sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
+    
+#   _______________________________________
+    #Get votes for Sen. Kelly
+    loeffler_votes <- Sall_votes_sub %>% filter(name == 'KELLY, Mark Edward')
+    loeffler_roll <- loeffler_votes$rollnumber
+    
+    loeffler_rep_df <- Sall_votes_rep %>% filter(rollnumber %in% loeffler_roll)
+    
+    #Make distance matrix for subset of rollnumbers
+    fname <- paste("./data/dist_subset_kelly_",as.character(cong),"th.nex",sep="")
+    sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
+    
+#   _______________________________________
+    #Get votes for Sen. McSally
+    loeffler_votes <- Sall_votes_sub %>% filter(name == 'McSALLY, Martha')
+    loeffler_roll <- loeffler_votes$rollnumber
+    
+    loeffler_rep_df <- Sall_votes_rep %>% filter(rollnumber %in% loeffler_roll)
+    
+    #Make distance matrix for subset of rollnumbers
+    fname <- paste("./data/dist_subset_mcsally_",as.character(cong),"th.nex",sep="")
+    sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
 
-loeffler_df <- Sall_votes_sub %>% filter(rollnumber %in% loeffler_roll)
-
-#Make distance matrix for subset of rollnumbers
-fname <- paste("./data/dist_subset_",as.character(cong),"th.nex",sep="")
-sub_dists <- makeDistMat(loeffler_df,fname)
-
-loeffler_rep_df <- Sall_votes_rep %>% filter(rollnumber %in% loeffler_roll)
-
-#Make distance matrix for subset of rollnumbers
-fname <- paste("./data/dist_subset_rep_",as.character(cong),"th.nex",sep="")
-sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
-
-# kelly_votes <- Sall_votes_sub %>% filter(name == 'KELLY, Mark Edward')
-# kelly_roll <- kelly_votes$rollnumber
+# Kelly has very few votes to plot
 
 
 

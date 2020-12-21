@@ -174,3 +174,13 @@ lastCong <- max(Sall_votes_sub$congress)
     scale_fill_manual(values=c("#0392cf","#ee4035"))
   
   ggsave("./figures/centerDistByParty.pdf",width=12,height=5)
+  
+  
+  
+  
+  
+  #  ------------- Get distances of all Senators from 'center' at 116th congress -------------
+  splitMat_116 <- read_delim("./data/splitWeights_tab_116th.txt", "\t", escape_double = FALSE, trim_ws = TRUE)
+  centerDists <- centerDist(splitMat_116) 
+  
+  plotCenterDist(centerDists)
