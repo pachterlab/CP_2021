@@ -203,30 +203,19 @@ plotCenterDist <- function(centerDists) {
 }
 
 # ---------- Runs test (Wald-Wolfowitz test) , probability of <= some numRuns of runs vs random (H_0) ----------
-calcRunsTest <- function(numInGrp,numOutGrp,numRuns,exactTest=TRUE) {
-  if (exactTest) {
-    #Exact test if P(runs <= numRuns) is a small calculation (FIX**************************)
-    #https://ncss-wpengine.netdna-ssl.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Analysis_of_Runs.pdf
-    
-    # P(runs <= numRuns) = sum(P(runs = i)) for i = 2..numRuns
-    tot <- numInGrp+numOutGrp
-    p_rof2 = 2*choose(numInGrp-1,0)*choose(numOutGrp-1,0)/choose(tot,numInGrp)
-    p_rof3 = (choose(numInGrp-1,0)*choose(numOutGrp-1,1) + choose(numInGrp-1,1)*choose(numOutGrp-1,0))/choose(tot,numInGrp)
-    p_rlessEq3 = p_rof2 + p_rof3
-    return(p_rlessEq3)
-  }
-  else {
+calcRunsTest <- function(numInGrp,numOutGrp,numRuns) {
+  
    # Z-test
     tot <- numInGrp+numOutGrp
     mu <- (2*numInGrp*numOutGrp)/(tot) + 1
     sigma <- sqrt((mu-1)*(mu-2)/(tot-1))
-    #c <- 0.5
+    c <- 0.5
     
-    z <- (numRuns-mu)/(sigma) # + c for continuity correction
+    z <- (numRuns - mu + c)/(sigma) #for continuity correction
 
-    # One-tailed, <=  3 runs (mu)
+    # One-tailed
     return(pnorm(-abs(z)))
-  }
+
 
 }
 

@@ -9,6 +9,12 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
 cong <- 116
 Sall_votes_sub  <- Sall_votes %>% filter(congress == cong)
 
+Sall_votes_rep <- Sall_votes %>% filter(congress == cong)
+Sall_votes_rep  <- Sall_votes_rep %>% filter(party_code == 200)
+
+Sall_votes_dem <- Sall_votes %>% filter(congress == cong)
+Sall_votes_dem  <- Sall_votes_dem %>% filter(party_code != 200)
+
 # --------------- Get distances for Senate members not present for full congress -----------------
 
 # KELLY, Mark Edward, LOEFFLER, Kelly (and her preceding senator ISAKSON, ) having missing votes for the 116th congress 
@@ -42,11 +48,11 @@ missingData_names <- rownames(votes_df_withna [rowSums(is.na(votes_df_withna )) 
     loeffler_votes <- Sall_votes_sub %>% filter(name == 'KELLY, Mark Edward')
     loeffler_roll <- loeffler_votes$rollnumber
     
-    loeffler_rep_df <- Sall_votes_rep %>% filter(rollnumber %in% loeffler_roll)
+    loeffler_dem_df <- Sall_votes_dem %>% filter(rollnumber %in% loeffler_roll)
     
     #Make distance matrix for subset of rollnumbers
     fname <- paste("./data/dist_subset_kelly_",as.character(cong),"th.nex",sep="")
-    sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
+    sub_dem_dists <- makeDistMat(loeffler_dem_df,fname)
     
 #   _______________________________________
     #Get votes for Sen. McSally

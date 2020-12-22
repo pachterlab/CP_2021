@@ -32,9 +32,9 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
     numRestAllParties <- dim(as.matrix(l1DistsAll))[1] - numCands
     numRestDem <- dim(as.matrix(l1DistsDem))[1] - numCands
     
-    pvalAll <- calcRunsTest(numCands,numRestAllParties,7,exactTest = FALSE) #Gillibrand not ordered sequentially with others
+    pvalAll <- calcRunsTest(numCands,numRestAllParties,7) #Gillibrand not ordered sequentially with others
     print(pvalAll)
-    pvalDem <- calcRunsTest(numCands,numRestDem,7,exactTest = FALSE) #Bennet not ordered sequentially with others
+    pvalDem <- calcRunsTest(numCands,numRestDem,7) #Bennet not ordered sequentially with others
     print(pvalDem)
 
   
@@ -102,6 +102,8 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
         ylab('Percent Agreement (Within Party Votes)') +
         labs(color="Vote Type")+
         scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"))
+      
+      ggsave("./figures/demVoteAgreementCandidates_remov1.pdf",width=5, height=3)
       
       lowAgree <- toPlot_remov$Rollcall[toPlot_remov$Percent < 0.25 & toPlot_remov$Vote == 0.5]
       
@@ -229,13 +231,16 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
   
   plot(as.factor(vote_ques))
   
-  descrPlot  <- data.frame(topInd, vote_ques)
+  #descrPlot  <- data.frame(topInd, vote_ques)
+  descrPlot  <- data.frame(1:length(vote_ques), vote_ques)
   colnames(descrPlot ) <- c('Rollcall','Vote Topic')
   
-  ggplot(descrPlot, aes(Rollcall,`Vote Topic`)) + geom_col() + xlab(NULL) +
-    xlab('Counts')+
+  ggplot(descrPlot) + geom_bar(aes(y = `Vote Topic`),fill = "black",alpha=0.8) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           panel.background = element_blank(), axis.line = element_line(colour = "black"),
-          axis.title=element_text(size=8),axis.text.x = element_text( size=5),
-          axis.text.y = element_text( size=7)) 
+          axis.title=element_text(size=8),axis.text.x = element_text( size=7),
+          axis.text.y = element_text( size=7),plot.title = element_text(size = 10)) +
+    ggtitle('Vote Topics for Top Votes')+
+    ylab('')+
+    xlab('Counts')
   ggsave("./figures/voteTopics.png",width=5, height=3)
