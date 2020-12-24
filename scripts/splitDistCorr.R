@@ -81,10 +81,10 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
 
   pdf(file = "./figures/l1vsplit_dists_corr.pdf",width=10,height=10)
   plot(as.matrix(splitDists_116),as.matrix(l1DistsAll),col = alpha(corrColors,0.3),pch=19,
-       xlab='NeighborNet Distances',ylab='L1 Distances')
-  text(x = 500, y = 300, labels = mylabel)
+       xlab='NeighborNet Distances',ylab='L1 Distances',cex.main=1.25, cex.lab=1.5, cex.axis=0.75)
+  text(x = 500, y = 300, labels = mylabel,cex = 1.5)
   legend("bottomright", legend = c('Rep-Rep','Dem-Dem','Rep-Dem'), 
-         col = c("#ee4035","#0392cf",'mediumpurple1'), pch = 19, bty = "n")
+         col = c("#ee4035","#0392cf",'mediumpurple1'), pch = 19, bty = "n",cex = 1.5)
   
   dev.off()
   

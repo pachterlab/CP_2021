@@ -1,7 +1,8 @@
 # All Functions Used For Split Senate Analysis
 
 # ---------- Make L1 distance matrix and nexus file for SplitsTree ----------
-# Make vote matrix (NEXUS compatible)
+
+# Make vote matrix
 makeVoteMat <- function(Sall_votes) {
   
   retParty <- function(code) {
@@ -170,7 +171,7 @@ centerDist <- function(splitMat) {
   
 }
 
-# ---------- Plot center dists ----------
+# ---------- Plot center dists for a congress ----------
 plotCenterDist <- function(centerDists) {
   colNames <- colnames(centerDists)
 
@@ -223,9 +224,9 @@ calcRunsTest <- function(numInGrp,numOutGrp,numRuns) {
 calcDisagree <- function(votesDem, names) {
   votesDem_sub <- votesDem[names,] 
   
-  #Indices of votes where all 5 candidates vote the same
+  #Indices of votes where all named members vote the same
   sameInds <- sapply(votesDem_sub, function(x) length(unique(x)) == 1 ) 
-  # Keep rollcall numbers associated with votes were all 5 vote the same
+  # Keep rollcall numbers associated with votes were all vote the same
   rollcalls <- as.numeric(colnames(votesDem_sub)) #1:length(sameInds)
   rollcalls <- rollcalls[sameInds]
   
@@ -245,7 +246,7 @@ calcDisagree <- function(votesDem, names) {
   justScores <- sortedScores$x
   newRoll <- rollcalls[sortedScores$ix]
   
-  voteTypes <- as.numeric(votesDem[ppl[1],as.character(newRoll)])
+  voteTypes <- as.numeric(votesDem[names[1],as.character(newRoll)])
   
   #Set colors
   toPlot <- data.frame(justScores, newRoll,voteTypes)
@@ -294,7 +295,7 @@ calcSplitVotPval <- function(votesDem,bin_names) {
 }
 
 
-# Make vote matrix (NEXUS compatible), keep senators with NAs (missing votes)
+# Make vote matrix (NEXUS compatible), keep senators with NAs (missing votes) (Turn into if statement)
 makeVoteMatwithNA <- function(Sall_votes) {
   
   retParty <- function(code) {

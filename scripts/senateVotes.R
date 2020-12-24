@@ -71,7 +71,7 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
     xlab('Vote Rollcall Number') + 
     ylab('Percent Agreement (Within Party Votes)') +
     labs(color="Vote Type")+
-    scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"))
+    scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Yea", "Abstain","Nay"))
   
   ggsave("./figures/demVoteAgreementCandidates.pdf",width=5, height=3)
 
@@ -101,7 +101,7 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
         xlab('Vote Rollcall Number') + 
         ylab('Percent Agreement (Within Party Votes)') +
         labs(color="Vote Type")+
-        scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"))
+        scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Yea", "Abstain","Nay"))
       
       ggsave("./figures/demVoteAgreementCandidates_remov1.pdf",width=5, height=3)
       
@@ -120,20 +120,20 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
       
         #Final Split
       
-      votesDemRemov02 <- makeVoteMat(Sall_votes_dem_removVotes_02)
-      
-      toPlot <- calcDisagree(votesDemRemov02,c("SANDERS_B_Ind","WARREN_E_Dem",
-                                        "BOOKER_C_Dem","HARRIS_K_Dem"))
-      
-      ggplot(toPlot, aes(x=Rollcall, y=Percent)) + 
-        geom_point(aes(x=Rollcall, y=Percent,color=as.factor(Vote)),alpha=0.7) +
-        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-              panel.background = element_blank(), axis.line = element_line(colour = "black"),
-              axis.title=element_text(size=8)) +
-        xlab('Vote Rollcall Number') + 
-        ylab('Percent Agreement (Within Party Votes)') +
-        labs(color="Vote Type")+
-        scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"))
+        votesDemRemov02 <- makeVoteMat(Sall_votes_dem_removVotes_02)
+        
+        toPlot <- calcDisagree(votesDemRemov02,c("SANDERS_B_Ind","WARREN_E_Dem",
+                                          "BOOKER_C_Dem","HARRIS_K_Dem"))
+        
+        ggplot(toPlot, aes(x=Rollcall, y=Percent)) + 
+          geom_point(aes(x=Rollcall, y=Percent,color=as.factor(Vote)),alpha=0.7) +
+          theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                panel.background = element_blank(), axis.line = element_line(colour = "black"),
+                axis.title=element_text(size=8)) +
+          xlab('Vote Rollcall Number') + 
+          ylab('Percent Agreement (Within Party Votes)') +
+          labs(color="Vote Type")+
+          scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Yea", "Abstain","Nay"))
     
     
 
@@ -149,7 +149,7 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
       xlab('Vote Rollcall Number') + 
       ylab('Percent Agreement (Within Party Votes)') +
       labs(color="Vote Type")+
-      scale_color_manual(values=c("#8DD3C7","#BEBADA"))
+      scale_color_manual(values=c("#8DD3C7","#BEBADA"),labels= c("Yea","Nay"))
     
     ggsave("./figures/demVoteAgreementCandidates_rand2.pdf",width=5, height=3)
 
@@ -187,6 +187,16 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
       ggtitle("Votes for {SANDERS,BOOKER,WARREN,HARRIS,KLOBUCHAR} Split")
     ggsave("./figures/pvalVotes_Candidates.pdf",width=5, height=3)
     
+    #Look for time variance of p-value rankings
+    loessMod <- loess(`-log10(P-value)` ~ Rollcall, data=pvalPlot, span=0.05) # 25% smoothing span
+    smoothed <- predict(loessMod) 
+    
+    plot(pvalPlot$`-log10(P-value)`, x=pvalPlot$Rollcall, type="l", main="Loess Smoothing and Prediction", xlab="Rollcall", ylab="-log10(pval)")
+    lines(smoothed, x=pvalPlot$Rollcall, col="red")
+    
+    res <- loessMod$residuals
+    sse <- sum(res^2)  
+    
 # ----------------------------------------------------------------- 
     
   #Get rownames --> binary list (Other cluster of democratic senators)
@@ -202,10 +212,10 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
   
   #Colored plot relating to temporal votes
   sorted_pvals <- sort(-log10(pvals), decreasing = TRUE, index.return=TRUE)
-  topInd <- sorted_pvals$ix[1:100]
+  topInd <- sorted_pvals$ix[sorted_pvals$x>3]
   color <- rollcallNums
   inTop <- color %in% topInd
-  color[inTop] <- 'Top 100'
+  color[inTop] <- 'Top Ranked'
   color[!inTop] <- 'Rest'
   
   pvalPlot <- data.frame(rollcallNums, -log10(pvals),color)
@@ -228,6 +238,8 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
   
   Sall_vote_dates_sub  <- Sall_vote_dates %>% filter(congress == cong)
   vote_ques <- Sall_vote_dates_sub$vote_question[Sall_vote_dates_sub$rollnumber %in% topInd]
+  
+  vote_desc <- Sall_vote_dates_sub$vote_desc[Sall_vote_dates_sub$rollnumber %in% topInd]
   
   plot(as.factor(vote_ques))
   
