@@ -8,14 +8,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+R (>= 3.6.1) is necessary for analysis:
 
-R install
-RStudio install
+R can be downloaded [here](https://cran.r-project.org/mirrors.html)
 
-```
-Give examples
-```
+The RStudio IDE can be downloaded [here](https://rstudio.com/products/rstudio/download/)
 
 ### Initial Setup
 
@@ -25,11 +22,6 @@ Give examples
 	* This will install all necessary packages, create the dataset necessary for analysis, and set working directory.
 
 
-```
-Give the example
-```
-
-
 ## Running Analysis
 
 1. senateVotes.R
@@ -37,26 +29,25 @@ Give the example
 	
 2. splitDistCorr.R
 
-3. senateOverTime
+3. senateOverTime.R
 
-4. missingSenators
+4. missingSenators.R
 
-5. exampleforFig1
+5. exampleforFig1.R
 
 All scripts utilize functions from distFuncs.R
 
 
 
-
 ## Authors
 
-* **Tara Chari** 
+* Tara Chari
 
 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
 
 ## Acknowledgments
 
