@@ -68,7 +68,6 @@ makeDistMat <- function(Sall_votes,outfile='dist.nex') {
   d <- dist(votes_df,method="manhattan",upper = FALSE,diag = TRUE)
   
   #Write distance matrix as nexus file
-  #fname <- paste("./dist_",as.character(cong),"th.nex",sep="")
   write.nexus.dist(d,file=outfile, append = FALSE, upper = FALSE,
                    diag = TRUE, digits = getOption("digits"))
   

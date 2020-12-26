@@ -17,10 +17,9 @@ Sall_votes_dem  <- Sall_votes_dem %>% filter(party_code != 200)
 
 # --------------- Get distances for Senate members not present for full congress -----------------
 
-    # KELLY, Mark Edward, LOEFFLER, Kelly (and her preceding senator ISAKSON, ) having missing votes for the 116th congress 
-    #Get votes with NA (missing votes) (see all individuals with missing votes)
-    votes_df_withna <- makeVoteMatwithNA(Sall_votes_sub)
-    missingData_names <- rownames(votes_df_withna [rowSums(is.na(votes_df_withna )) > 0,])
+  #Get votes with NA (missing votes) (see all individuals with missing votes)
+  votes_df_withna <- makeVoteMatwithNA(Sall_votes_sub)
+  missingData_names <- rownames(votes_df_withna [rowSums(is.na(votes_df_withna )) > 0,])
 
       #Get votes for Sen. Loeffler
       loeffler_votes <- Sall_votes_sub %>% filter(name == 'LOEFFLER, Kelly')

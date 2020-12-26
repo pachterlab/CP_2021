@@ -103,7 +103,7 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
         labs(color="Vote Type")+
         scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Yea", "Abstain","Nay"))
       
-      ggsave("./figures/demVoteAgreementCandidates_remov1.pdf",width=5, height=3)
+      #ggsave("./figures/demVoteAgreementCandidates_remov1.pdf",width=5, height=3)
       
       lowAgree <- toPlot_remov$Rollcall[toPlot_remov$Percent < 0.25 & toPlot_remov$Vote == 0.5]
       
@@ -241,9 +241,8 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
   
   vote_desc <- Sall_vote_dates_sub$vote_desc[Sall_vote_dates_sub$rollnumber %in% topInd]
   
-  plot(as.factor(vote_ques))
+  #plot(as.factor(vote_ques))
   
-  #descrPlot  <- data.frame(topInd, vote_ques)
   descrPlot  <- data.frame(1:length(vote_ques), vote_ques)
   colnames(descrPlot ) <- c('Rollcall','Vote Topic')
   
