@@ -25,15 +25,21 @@ The RStudio IDE can be downloaded [here](https://rstudio.com/products/rstudio/do
 ## Running Analysis
 
 1. senateVotes.R
-	* Function/description
+	* Code to generate spits graphs for the 116th Senate
+	* Analysis of apparent 'coalitions' of Democratic Senators
+	* Statistical analysis of vote contribution to coalition splits
 	
 2. splitDistCorr.R
-
+	* Concordance and correlation of split weight distances and L1 input distances for the 116th Senate
+	
 3. senateOverTime.R
+	* Analysis of agreement distributions ('center' distances) across Senates from the last 30 years
 
 4. missingSenators.R
+	* Creation of distance matrices for splits graphs of senators not present for all votes in the 116th Senate
 
 5. exampleforFig1.R
+	* Code to generate example splits graph in Figure 1
 
 All scripts utilize functions from distFuncs.R
 
@@ -42,10 +48,6 @@ All scripts utilize functions from distFuncs.R
 ## Authors
 
 * Tara Chari
-
-
-
-## License
 
 
 
