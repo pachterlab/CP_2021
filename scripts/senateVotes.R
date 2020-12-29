@@ -71,7 +71,7 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
     xlab('Vote Rollcall Number') + 
     ylab('Percent Agreement (Within Party Votes)') +
     labs(color="Vote Type")+
-    scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Yea", "Abstain","Nay"))
+    scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Nay", "Abstain","Yea"))
   
   ggsave("./figures/demVoteAgreementCandidates.pdf",width=5, height=3)
 
@@ -101,7 +101,7 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
         xlab('Vote Rollcall Number') + 
         ylab('Percent Agreement (Within Party Votes)') +
         labs(color="Vote Type")+
-        scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Yea", "Abstain","Nay"))
+        scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Nay", "Abstain","Yea"))
       
       #ggsave("./figures/demVoteAgreementCandidates_remov1.pdf",width=5, height=3)
       
@@ -133,7 +133,7 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
           xlab('Vote Rollcall Number') + 
           ylab('Percent Agreement (Within Party Votes)') +
           labs(color="Vote Type")+
-          scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Yea", "Abstain","Nay"))
+          scale_color_manual(values=c("#8DD3C7","#FB8072","#BEBADA"),labels= c("Nay", "Abstain","Yea"))
     
     
 
@@ -149,7 +149,7 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
       xlab('Vote Rollcall Number') + 
       ylab('Percent Agreement (Within Party Votes)') +
       labs(color="Vote Type")+
-      scale_color_manual(values=c("#8DD3C7","#BEBADA"),labels= c("Yea","Nay"))
+      scale_color_manual(values=c("#8DD3C7","#BEBADA"),labels= c("Nay","Yea"))
     
     ggsave("./figures/demVoteAgreementCandidates_rand2.pdf",width=5, height=3)
 
@@ -188,14 +188,16 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
     ggsave("./figures/pvalVotes_Candidates.pdf",width=5, height=3)
     
     #Look for time variance of p-value rankings
-    loessMod <- loess(`-log10(P-value)` ~ Rollcall, data=pvalPlot, span=0.05) # 25% smoothing span
+    loessMod <- loess(`-log10(P-value)` ~ Rollcall, data=pvalPlot, span=0.35) # 25% smoothing span
     smoothed <- predict(loessMod) 
     
-    plot(pvalPlot$`-log10(P-value)`, x=pvalPlot$Rollcall, type="l", main="Loess Smoothing and Prediction", xlab="Rollcall", ylab="-log10(pval)")
+    plot(pvalPlot$`-log10(P-value)`, x=pvalPlot$Rollcall, type="p", main="Loess Smoothing and Prediction", xlab="Rollcall", ylab="-log10(pval)")
     lines(smoothed, x=pvalPlot$Rollcall, col="red")
     
     res <- loessMod$residuals
     sse <- sum(res^2)  
+    
+    loessMod
     
 # ----------------------------------------------------------------- 
     
