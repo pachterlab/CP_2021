@@ -2,6 +2,9 @@
 
 Code for reproducing the results in "The Split Senate" preprint.
 
+![Alt text](https://github.com/pachterlab/CP_2021/blob/main/116senate.png?raw=true "The Split Senate")
+
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -48,5 +51,4 @@ All scripts utilize functions from distFuncs.R
 ## Authors
 
 * Tara Chari
-
 
