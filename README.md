@@ -1,4 +1,4 @@
-# CP_2021: The Split Senate
+# The Split Senate
 
 Code for reproducing the results in "The Split Senate" preprint.
 
@@ -48,9 +48,5 @@ All scripts utilize functions from distFuncs.R
 ## Authors
 
 * Tara Chari
-
-
-
-## Acknowledgments
 
 
