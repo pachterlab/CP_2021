@@ -175,6 +175,14 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
     pvalPlot <- data.frame(rollcallNums, -log10(pvals),color)
     colnames(pvalPlot) <- c('Rollcall','-log10(P-value)','color')
     
+    #Look for time variance of p-value rankings
+    loessMod <- loess(`-log10(P-value)` ~ Rollcall, data=pvalPlot, span=0.45) # 45% smoothing span
+    smoothed <- predict(loessMod) 
+    res <- loessMod$residuals
+    sse <- sum(res^2)  
+    loessMod
+    
+    
     ggplot(pvalPlot, aes(x=Rollcall, y=`-log10(P-value)`)) + 
       geom_point(aes(x=Rollcall, y=`-log10(P-value)`,color=color),alpha=0.7) +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -183,22 +191,12 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
       xlab('Vote Rollcall Number') + 
       ylab('-log10(p-value)') +
       labs(color="Votes")+
-      scale_color_manual(values=c("#FB8072","grey"))+
+      scale_color_manual(values=c("#FB8072","grey","red"))+
+      geom_line(linetype = 2, colour="black",aes(x=Rollcall, y=smoothed))+
       ggtitle("Votes for {SANDERS,BOOKER,WARREN,HARRIS,KLOBUCHAR} Split")
     ggsave("./figures/pvalVotes_Candidates.pdf",width=5, height=3)
     
-    #Look for time variance of p-value rankings
-    loessMod <- loess(`-log10(P-value)` ~ Rollcall, data=pvalPlot, span=0.35) # 25% smoothing span
-    smoothed <- predict(loessMod) 
-    
-    plot(pvalPlot$`-log10(P-value)`, x=pvalPlot$Rollcall, type="p", main="Loess Smoothing and Prediction", xlab="Rollcall", ylab="-log10(pval)")
-    lines(smoothed, x=pvalPlot$Rollcall, col="red")
-    
-    res <- loessMod$residuals
-    sse <- sum(res^2)  
-    
-    loessMod
-    
+
 # ----------------------------------------------------------------- 
     
   #Get rownames --> binary list (Other cluster of democratic senators)
