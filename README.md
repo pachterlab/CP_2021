@@ -49,4 +49,6 @@ All scripts utilize functions from distFuncs.R
 
 * Tara Chari
 
+![Alt text](116Ssenate.png?raw=true "The Split Senate")
+
 
