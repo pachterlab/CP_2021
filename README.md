@@ -37,7 +37,7 @@ rscript gendata.R
 ## Running Analysis
 
 1. senateVotes.R
-	* Code to generate spits graphs for the 116th Senate
+	* Code to generate splits graphs for the 116th Senate
 	* Analysis of apparent 'coalitions' of Democratic Senators
 	* Statistical analysis of vote contribution to coalition splits
 	
