@@ -12,7 +12,7 @@ using<-function(...) {
 using("usedist","phangorn","readr","tidyverse","tidyr","hash","STAT","graphics","grDevices","ggpubr","viridis","stringi","pheatmap","gplots","scales")
 
 #Set wd()
-  setwd("~/Desktop/Pachter_Lab/CP_2021")
+  setwd("../../CP_2021")
   source('scripts/distFuncs.R')
 
 #Read in and generate data for analysis
