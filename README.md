@@ -31,7 +31,6 @@ cd CP_2021/scripts
 rscript gendata.R
 ```
 * This will install all necessary packages, create the annotated dataset for analysis, and set the working directory.
-* Change working directory in script accordingly
 
 
 ## Running Analysis
