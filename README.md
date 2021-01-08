@@ -21,9 +21,17 @@ The RStudio IDE can be downloaded [here](https://rstudio.com/products/rstudio/do
 
 1. Clone github repo
 
-2. Run gendata.R
-	* This will install all necessary packages, create the annotated dataset for analysis, and set the working directory.
-	* Change working directory in line 15 accordingly
+2. Move to main scripts
+```
+cd CP_2021/scripts
+```
+
+3. Run gendata.R
+```
+rscript gendata.R
+```
+* This will install all necessary packages, create the annotated dataset for analysis, and set the working directory.
+* Change working directory in script accordingly
 
 
 ## Running Analysis
