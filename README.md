@@ -76,7 +76,7 @@ All scripts utilize functions from distFuncs.R
 
 **For Python Code:**
 
-1. run_VoteAnalysis.py
+1. run_voteAnalysis.py
 	* Runs analysis analagous to senateVotes.R and senateOverTime.R
 	* Generate circular split-system, phylogenetic outline of system, and NEXUS files for SplitsTree viewing
 	* Analysis of apparent 'coalitions', statistical analysis of vote contributions to splits, and analysis of agreement distributions over time.
