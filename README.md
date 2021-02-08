@@ -82,10 +82,10 @@ All scripts utilize functions from distFuncs.R
 	* Analysis of apparent 'coalitions', statistical analysis of vote contributions to splits, and analysis of agreement distributions over time.
 
 
-### Authors
+## Authors
 
 * Tara Chari
 
-### References
+## References
 
 [1] Daniel H. Huson, Caner Bagci, Banu Cetinkaya and David Bryant. Phylogenetic context and the use of phylogenetic outlines. Manuscript in preparation (2021)
