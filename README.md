@@ -11,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-R (>= 3.6.1) is necessary for analysis:
+R (>= 3.6.1) or Python (>= 3.6) is necessary for analysis:
 
 R can be downloaded [here](https://cran.r-project.org/mirrors.html)
 
@@ -19,11 +19,13 @@ The RStudio IDE can be downloaded [here](https://rstudio.com/products/rstudio/do
 
 ### Initial Setup
 
+**For R Analysis:**
+
 1. Clone github repo
 
 2. Move to main scripts
 ```
-cd CP_2021/scripts
+cd CP_2021/R/scripts
 ```
 
 3. Run gendata.R
@@ -32,8 +34,26 @@ rscript gendata.R
 ```
 * This will install all necessary packages, create the annotated dataset for analysis, and set the working directory.
 
+**For Python Analysis:**
+Replicates analysis in R using the [SplitsPy](https://github.com/husonlab/SplitsPy) package [1].
+
+1. Clone github repo
+
+2. Install Fisher's Exact Test in Python
+```
+pip install FisherExact
+```
+
+If an error occurs, may require  ```pip install future``` or installation of ```gfortran``` (see [here](https://gcc.gnu.org/wiki/GFortranBinaries)).
+
+3. Move to main scripts
+```
+cd CP_2021/Python
+```
 
 ## Running Analysis
+
+**For R Code:**
 
 1. senateVotes.R
 	* Code to generate splits graphs for the 116th Senate
@@ -54,9 +74,18 @@ rscript gendata.R
 
 All scripts utilize functions from distFuncs.R
 
+**For Python Code:**
+
+1. run_VoteAnalysis.py
+	* Runs analysis analagous to senateVotes.R and senateOverTime.R
+	* Generate circular split-system, phylogenetic outline of system, and NEXUS files for SplitsTree viewing
+	* Analysis of apparent 'coalitions', statistical analysis of vote contributions to splits, and analysis of agreement distributions over time.
 
 
-## Authors
+### Authors
 
 * Tara Chari
 
+### References
+
+[1] Daniel H. Huson, Caner Bagci, Banu Cetinkaya and David Bryant. Phylogenetic context and the use of phylogenetic outlines. Manuscript in preparation (2021)
