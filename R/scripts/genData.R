@@ -29,6 +29,14 @@ using("usedist","phangorn","readr","tidyverse","tidyr","hash","STAT","graphics",
   #Get party affiliation
   Sall_votes[c("party_code")] <- 
     lapply(Sall_votes[c("icpsr")], function(col) Sall_members$party_code[match(col, Sall_members$icpsr)])
+
+  #Get NOMINATE scores
+  Sall_votes[c("nominate_dim1")] <- 
+    lapply(Sall_votes[c("icpsr")], function(col) Sall_members$nominate_dim1[match(col, Sall_members$icpsr)])
+
+  #Get NOMINATE scores
+  Sall_votes[c("nominate_dim2")] <- 
+    lapply(Sall_votes[c("icpsr")], function(col) Sall_members$nominate_dim2[match(col, Sall_members$icpsr)])
   
   class(Sall_votes)
   

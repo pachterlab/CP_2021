@@ -86,6 +86,23 @@ def makeVoteMat(df, nameID = 'plotID'):
 
     return voteMat
 
+def makeMetaMat(df, nameID = 'plotID'):
+    """
+    Parameters :
+    df : Raw, unmodified input vote pandas dataframe
+    Returns :
+    In-place modified dataframe, so names are splitspy/NEXUS compatible and votes are mapped to real values 0, 0.5, 1.0
+    """
+
+    df['party'] = [convertParty(i) for i in df['party_code']]
+    df['fixName'] = [convertName(i) for i in df['name']]
+
+    df[nameID] = [str(i) +'_'+ str(j) for i, j in zip(df['fixName'], df['party'])] 
+
+    metaDF = df.set_index(nameID)
+
+    return metaDF
+
 
 def makeDistMat(df, names = 'plotID', metric='cityblock'):
     """
@@ -234,14 +251,20 @@ def makeVis(labels,cycle,splits,matrix,outfilePhylo,outfileNexus,show=True,width
     splits_io.print_splits_nexus(labels, splits, cycle, fit, filename=outfileNexus)
 
 
-def plotScatter(df, x, y, c = None,colors = None, outfile = "", xaxis = "", yaxis = "", title="", rotation = 0, fontx =10, fonty =10, fontT = 10, fontL = 4, show =True):
+def plotScatter(df, x, y, c = None,colors = None, outfile = "", xaxis = "", yaxis = "", title="", legendTitle="", rotation = 0, fontx =10, fonty =10, fontT = 10, fontL = 4, show =True):
 
     p = sns.scatterplot(data = df, x = x, y = y, hue = c,alpha=0.6, palette = colors)
+    p.legend(title=legendTitle,frameon=False)
 
     p.axes.set_title(title,fontsize=fontT)
+    # Hide the right and top spines
+    p.axes.spines['right'].set_visible(False)
+    p.axes.spines['top'].set_visible(False)
     p.set_xlabel(xaxis,fontsize=fontx)
     p.set_ylabel(yaxis,fontsize=fonty)
     p.tick_params(labelsize=fontL,labelrotation=rotation)
+
+
     plt.tight_layout()
 
     if outfile != "":
@@ -254,6 +277,32 @@ def plotScatter(df, x, y, c = None,colors = None, outfile = "", xaxis = "", yaxi
             Popen('open %s' % title+"_out.pdf",shell=True)
     plt.clf()
 
+
+def plotSwarm(df, x, y, c = None,colors = None, outfile = "", xaxis = "", yaxis = "", title="", legendTitle="", rotation = 0, fontx =10, fonty =10, fontT = 10, fontL = 4, show =True):
+
+    p = sns.swarmplot(data = df, x = x, y = y, hue = c,alpha=0.6, palette = colors, dodge = True)
+    p.legend(title=legendTitle,frameon=False)
+
+    p.axes.set_title(title,fontsize=fontT)
+    # Hide the right and top spines
+    p.axes.spines['right'].set_visible(False)
+    p.axes.spines['top'].set_visible(False)
+    p.set_xlabel(xaxis,fontsize=fontx)
+    p.set_ylabel(yaxis,fontsize=fonty)
+    p.tick_params(labelsize=fontL,labelrotation=rotation)
+
+
+    plt.tight_layout()
+
+    if outfile != "":
+        plt.savefig(outfile)
+        if show:
+            Popen('open %s' % outfile,shell=True)
+    else:   
+        plt.savefig(title+"_out.pdf")
+        if show:
+            Popen('open %s' % title+"_out.pdf",shell=True)
+    plt.clf()
 
 def plotViolin(df, x, y, c = None,colors = None, outfile = "", xaxis = "", yaxis = "", title="", rotation = 0, fontx =10, fonty =10, fontT = 10, fontL = 4, show =True):
 
