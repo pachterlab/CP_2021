@@ -58,6 +58,51 @@ makeVoteMat <- function(Sall_votes) {
   return(votes_df)
 }
 
+# Make metadata matrix
+makeMetaMat <- function(Sall_votes) {
+  
+  retParty <- function(code) {
+    if (code == 100) {
+      return("Dem")
+    }
+    else if (code == 200){
+      return("Rep")
+    }
+    else{
+      return("Ind")
+    }
+    
+  }
+  
+  Sall_votes[c("party")] <- 
+    lapply(Sall_votes[c("party_code")], function(col) map(col,retParty))
+  
+  
+  
+  #Change names --> LASTNAME_FirstInitial_Party
+  newName <- function(name){
+    new = substr(name, start=1, stop=str_locate(name, ",")[1]+2)
+    new = gsub("'", "",new)
+    new = gsub("\\(", "",new)
+    new = gsub(", ", "_",new)
+    new = gsub(" ", "_",new)
+    
+  }
+  
+  Sall_votes[c("name")] <- 
+    lapply(Sall_votes[c("name")], function(col) map(col,newName))
+  
+  Sall_votes[c("plotID")] = paste(Sall_votes$name, Sall_votes$party, sep="_")
+
+  
+  
+  #Make new names the rownames
+  votes_df <- Sall_votes
+  #rownames(votes_df) <- votes_df$plotID
+  
+  return(votes_df)
+}
+
 #Generate NEXUS distance matrix from vote matrix
 makeDistMat <- function(Sall_votes,outfile='dist.nex') {
   
