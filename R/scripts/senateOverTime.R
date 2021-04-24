@@ -1,7 +1,7 @@
 source('scripts/distFuncs.R')
 Sall_votes = as_tibble(read_csv("./data/Sall_votes_withPartyAndNames.csv") )
 
-#  ------- Plot distances from center over time as density plots of whole House --------
+#  ------- Plot distances from center over time as density plots of whole Senate --------
 # Make distance matrix and nexus output for 100-116th congresses (~30 years)
   firstCong = 101
   lastCong = 116
@@ -19,7 +19,7 @@ Sall_votes = as_tibble(read_csv("./data/Sall_votes_withPartyAndNames.csv") )
   # Calculate distances for each person
   allDists <- list()
   
-  # Weights matrices saved in directory
+  # Weights matrices saved in directory,downloaded from SplitsTree program output (using NEXUS input)
   for (cong in firstCong:lastCong){
     fname <- paste("./data/splitWeights_tab_",as.character(cong),"th.txt",sep="")
     splitMat <- read_delim(fname, "\t", escape_double = FALSE, trim_ws = TRUE)
@@ -112,6 +112,10 @@ Sall_votes = as_tibble(read_csv("./data/Sall_votes_withPartyAndNames.csv") )
   #Print results of two-sided Mann-Whitney U-test for range differences with different majority parties
   wilcox.test(Range ~ Majority, data= dem_rangeByParty, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
   wilcox.test(Range ~ Majority, data= rep_rangeByParty, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+  
+  #Print Hedge's g for effect size of majority party effect on ranges
+  cohen.d(Range ~ Majority, data=dem_rangeByParty,hedges.correction=TRUE)
+  cohen.d(Range ~ Majority, data=rep_rangeByParty,hedges.correction=TRUE)
   
   #Plot
   ggplot(dfAll, aes(x=Congress, y=Distance, fill=Congress)) +
