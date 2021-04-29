@@ -165,6 +165,7 @@ Sall_votes = as_tibble(read_csv("./data/Sall_votes_withPartyAndNames.csv") )
   
   df$dists[df$party == 'Dem'] <- -1*df$dists[df$party == 'Dem']
   df$dists[df$party == 'Ind'] <- -1*df$dists[df$party == 'Ind']
+  df$party[df$party == 'Ind'] <- rep('Dem',length(df$party[df$party == 'Ind']))
   
   #Plot center distances for 116th Senate
   plotCenterDist(centerDists)
@@ -172,13 +173,17 @@ Sall_votes = as_tibble(read_csv("./data/Sall_votes_withPartyAndNames.csv") )
   #Plot correlation to NOMINATE scores (Spearmanr correlation) 
   pdf(file = "./figures/nominateScore_corr.pdf",width=6,height=4)
   
-  ggscatter(df, x = "dists", y = "nom_dim1",add = "reg.line", conf.int = TRUE,
+  ggscatter(df, x = "dists", y = "nom_dim1",
+            add = "reg.line", conf.int = TRUE,
             cor.coef = TRUE, cor.method = "spearman",alpha = 0 ,
             xlab = "Center Distances", ylab = "DW-NOMINATE Dim. 1",legend.title = 'Party') +
-  geom_point(aes(colour = party),
-             alpha = .6,size = 2) + scale_color_manual(values=c("#0392cf","#ee4035","#128B03")) +
+  geom_point(aes(colour = party), alpha = .6,size = 2) +
+  scale_color_manual(values=c("#0392cf","#ee4035")) +
+  facet_wrap(~party) +
   font("xlab", size = 10) +
   font("ylab", size = 10) +
   font("xy.text", size = 10) + theme(legend.position = c(0.8, 0.2))
+  
+  
   
   dev.off()
