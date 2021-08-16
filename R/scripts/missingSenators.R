@@ -29,7 +29,22 @@ Sall_votes_dem  <- Sall_votes_dem %>% filter(party_code != 200)
       
       #Make distance matrix for subset of rollnumbers
       fname <- paste("./data/dist_subset_loeffler_",as.character(cong),"th.nex",sep="")
-      sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
+      
+      #---Make visual---
+      allVals <- makeDistMat2(loeffler_rep_df)
+      
+      #Get distance matrix between votes and labels for all observations/members (rows of matrix)
+      mat <- allVals[1]$Dists
+      labels <- allVals[2]$Labs
+      
+      
+      #Get cycle ordering of observations and splits comprising the split network
+      d <- getSplits(labels, mat)
+      
+      cycle <- d[1][[1]]
+      splits <- d[2][[1]]
+      
+      getSplitVis(labels,cycle,splits,mat,'Loefflersplitgraph.pdf',fname)
       
   #   _______________________________________    
       #Get votes for Sen. Isakson
@@ -40,7 +55,22 @@ Sall_votes_dem  <- Sall_votes_dem %>% filter(party_code != 200)
       
       #Make distance matrix for subset of rollnumbers
       fname <- paste("./data/dist_subset_isakson_",as.character(cong),"th.nex",sep="")
-      sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
+      
+      #---Make visual---
+      allVals <- makeDistMat2(loeffler_rep_df)
+      
+      #Get distance matrix between votes and labels for all observations/members (rows of matrix)
+      mat <- allVals[1]$Dists
+      labels <- allVals[2]$Labs
+      
+      
+      #Get cycle ordering of observations and splits comprising the split network
+      d <- getSplits(labels, mat)
+      
+      cycle <- d[1][[1]]
+      splits <- d[2][[1]]
+      
+      getSplitVis(labels,cycle,splits,mat,'Isaksonsplitgraph.pdf',fname)
       
   #   _______________________________________
       #Get votes for Sen. Kelly
@@ -51,7 +81,22 @@ Sall_votes_dem  <- Sall_votes_dem %>% filter(party_code != 200)
       
       #Make distance matrix for subset of rollnumbers
       fname <- paste("./data/dist_subset_kelly_",as.character(cong),"th.nex",sep="")
-      sub_dem_dists <- makeDistMat(loeffler_dem_df,fname)
+      
+      #---Make visual---
+      allVals <- makeDistMat2(loeffler_dem_df)
+      
+      #Get distance matrix between votes and labels for all observations/members (rows of matrix)
+      mat <- allVals[1]$Dists
+      labels <- allVals[2]$Labs
+      
+      
+      #Get cycle ordering of observations and splits comprising the split network
+      d <- getSplits(labels, mat)
+      
+      cycle <- d[1][[1]]
+      splits <- d[2][[1]]
+      
+      getSplitVis(labels,cycle,splits,mat,'Kellysplitgraph.pdf',fname)
       
   #   _______________________________________
       #Get votes for Sen. McSally
@@ -62,7 +107,22 @@ Sall_votes_dem  <- Sall_votes_dem %>% filter(party_code != 200)
       
       #Make distance matrix for subset of rollnumbers
       fname <- paste("./data/dist_subset_mcsally_",as.character(cong),"th.nex",sep="")
-      sub_rep_dists <- makeDistMat(loeffler_rep_df,fname)
+      
+      #---Make visual---
+      allVals <- makeDistMat2(loeffler_rep_df)
+      
+      #Get distance matrix between votes and labels for all observations/members (rows of matrix)
+      mat <- allVals[1]$Dists
+      labels <- allVals[2]$Labs
+      
+      
+      #Get cycle ordering of observations and splits comprising the split network
+      d <- getSplits(labels, mat)
+      
+      cycle <- d[1][[1]]
+      splits <- d[2][[1]]
+      
+      getSplitVis(labels,cycle,splits,mat,'Mcsallysplitgraph.pdf',fname)
 
 # Kelly has very few votes to plot
 

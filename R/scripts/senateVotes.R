@@ -6,13 +6,29 @@ Sall_votes <- as_tibble(read_csv("./data/Sall_votes_withPartyAndNames.csv") )
 Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = c("numeric","character","numeric","character","character","character","numeric","numeric","numeric","numeric","numeric","numeric","numeric","character","character","character","character","character")))
 
 
-# ------------- Make distance matrix and nexus output for 116th congresses -------------
+# ------------- Make distance matrix and nexus output for 116th congress -------------
   cong <- 116
   Sall_votes_sub  <- Sall_votes %>% filter(congress == cong)
     
   fname <- paste("./data/dist_",as.character(cong),"th.nex",sep="")
     
   l1DistsAll <- makeDistMat(Sall_votes_sub,fname)
+  
+  #---Make visual---
+  allVals <- makeDistMat2(Sall_votes_sub)
+  
+  #Get distance matrix between votes and labels for all observations/members (rows of matrix)
+  mat <- allVals[1]$Dists
+  labels <- allVals[2]$Labs
+  
+  
+  #Get cycle ordering of observations and splits comprising the split network
+  d <- getSplits(labels, mat)
+  
+  cycle <- d[1][[1]]
+  splits <- d[2][[1]]
+  
+  getSplitVis(labels,cycle,splits,mat,'116splitgraph.pdf',fname)
 
 
 #  ------------- Within-party strucures and distances -------------
@@ -25,6 +41,22 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
     fname <- paste("./data/dist_dem_",as.character(cong),"th.nex",sep="")
     
     l1DistsDem <- makeDistMat(Sall_votes_dem,fname)
+    
+    #---Make visual---
+    allVals <- makeDistMat2(Sall_votes_dem)
+    
+    #Get distance matrix between votes and labels for all observations/members (rows of matrix)
+    mat <- allVals[1]$Dists
+    labels <- allVals[2]$Labs
+    
+    
+    #Get cycle ordering of observations and splits comprising the split network
+    d <- getSplits(labels, mat)
+    
+    cycle <- d[1][[1]]
+    splits <- d[2][[1]]
+    
+    getSplitVis(labels,cycle,splits,mat,'Demsplitgraph.pdf',fname)
 
 
   # Runs Test for Dem Primary Candidates grouping (at least 6 of 7 ordered contiguously)
@@ -46,6 +78,22 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
     fname <- paste("./data/dist_rep_",as.character(cong),"th.nex",sep="")
     
     l1DistsRep <- makeDistMat(Sall_votes_rep,fname)
+    
+    #---Make visual---
+    allVals <- makeDistMat2(Sall_votes_rep)
+    
+    #Get distance matrix between votes and labels for all observations/members (rows of matrix)
+    mat <- allVals[1]$Dists
+    labels <- allVals[2]$Labs
+    
+    
+    #Get cycle ordering of observations and splits comprising the split network
+    d <- getSplits(labels, mat)
+    
+    cycle <- d[1][[1]]
+    splits <- d[2][[1]]
+    
+    getSplitVis(labels,cycle,splits,mat,'Repsplitgraph.pdf',fname)
 
 
 
@@ -165,10 +213,8 @@ Sall_vote_dates <- as_tibble(read.csv("./data/Sall_rollcalls.csv", colClasses = 
     toPlot <- calcDisagree(votesDem,ppl)
     lowAgree <- toPlot$Rollcall[toPlot$Percent < 0.25]
     
-    #Binarize names for members on one side of split
-    bin_names <- as.integer(names %in% ppl)
-    
-    pvals <- calcSplitVotPval(votesDem,bin_names)
+   
+    pvals<- calcVotPval(unname(as.matrix(votesDem)),names,ppl)
     #Colored plot relating to temporal votes
     color <- ifelse(rollcallNums %in% lowAgree,'Abstains','Other')
     

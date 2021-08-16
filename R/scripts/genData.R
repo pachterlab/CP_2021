@@ -11,6 +11,9 @@ using<-function(...) {
 
 using("usedist","phangorn","readr","tidyverse","tidyr","hash","STAT","graphics","grDevices","ggpubr","viridis","stringi","pheatmap","gplots","scales","effsize")
 
+devtools::install_github("tarachari3/SplitStats")
+library(SplitStats)
+
 #Set wd()
   setwd("../../R")
   source('scripts/distFuncs.R')
